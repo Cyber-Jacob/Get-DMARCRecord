@@ -2,7 +2,7 @@
 This is a Powershell function to fetch DMARC records. DMARC is becoming a de-facto requirement for system admins that want their applications, organizations, or environments to send email. Since DMARC is becoming a requirement for mail delivery, this tool will fetch DMARC records as specified by RFC7489 (https://datatracker.ietf.org/doc/html/rfc7489). You can use this to confirm if you have successfully placed your record on the right subdomain. 
 
 
-##Usage
+## Usage
 This tool does **not** validate that record; instead this tool leaved the records you receive as a powershell object, accessible via the properties of the Microsoft.DnsClient.Commands.DnsRecord object. The ones you can use will be something like this:
 ```
 (Get-DMARCRecord dmarc.org).Strings
