@@ -6,7 +6,7 @@ This is a Powershell function to fetch DMARC records. DMARC is becoming a de-fac
 
 
 ## Usage
-This tool does **not** validate that record; instead this tool leaved the records you receive as a powershell object, accessible via the properties of the Microsoft.DnsClient.Commands.DnsRecord object. The ones you can use will be something like this:
+This tool does **not** validate that record as p=none, p=reject, or p=quarantine; instead this tool looks for technically valid DMARC records according to RFC7489(https://datatracker.ietf.org/doc/html/rfc7489) and leaves the records you receive as a powershell object, accessible via the properties of the Microsoft.DnsClient.Commands.DnsRecord object. The ones you can use will be something like this:
 ```
 (Get-DMARCRecord dmarc.org).Strings
 Get-DMARCRecord $domainlist | Where-Object {$_.Strings -match "v=DMARC1;"}
