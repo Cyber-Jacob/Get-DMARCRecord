@@ -2,7 +2,7 @@
 
 ![img-GIdF6EAXze9clRgF3xn9ucy9](https://github.com/Cyber-Jacob/Get-DMARCRecord/assets/88467147/e86ea27a-6887-4c7d-b138-4e8d6ceb8507)
 
-This is a Powershell function to fetch DMARC records. DMARC is becoming a de-facto requirement for system admins that want their applications, organizations, or environments to send email. Since DMARC is becoming a requirement for mail delivery, this tool will fetch DMARC records as specified by RFC7489 (https://datatracker.ietf.org/doc/html/rfc7489). You can use this to confirm if you have successfully placed your record on the right subdomain. 
+This is a Powershell cmdlet to fetch DMARC records. DMARC is becoming a de-facto requirement for system admins that want their applications, organizations, or environments to send email. Since DMARC is becoming a requirement for mail delivery, this tool will fetch DMARC records as specified by RFC7489 (https://datatracker.ietf.org/doc/html/rfc7489). You can use this to confirm if you have successfully placed your record on the right subdomain. 
 
 
 ## Usage
