@@ -71,7 +71,7 @@ function Get-DmarcRecord {
                 <#If the query we are returned contains _dmarc. as part of its' subdomain and a text record matching "V=DMARC1", then we
                 treat it as valid and successful
                 Write the query to show the user what is happening and let them know what they see in terms of valid records.#>
-                if ($query.Name -match "_dmarc." -and $query.Strings -match "v=DMARC1") {
+                if ($query.Name -match "_dmarc." -and $query.Strings -match "v=DMARC1;") {
                     $successful += 1
                     $masterrecord += $query
                     write-output $query
