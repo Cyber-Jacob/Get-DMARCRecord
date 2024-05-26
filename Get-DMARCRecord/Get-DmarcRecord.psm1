@@ -1,3 +1,6 @@
+<#
+.HelpInfoURI 'https://github.com/Cyber-Jacob/Get-DMARCRecord/blob/main/Help/Get-DMARCRecord.md'
+#>
 function Get-DMARCRecord {
     param (
         [Parameter(
@@ -53,8 +56,10 @@ function Get-DMARCRecord {
             $splat_parameters['Server'] = $Server
         }
 
-        if (Test-Path $Name -PathType Leaf) {
-            $Name = Get-Content -Path $Name
+        if ("\" -in $Name) {
+            if (Test-Path $Name -PathType Leaf) {
+                $Name = Get-Content -Path $Name
+            }
         }
     }
 
