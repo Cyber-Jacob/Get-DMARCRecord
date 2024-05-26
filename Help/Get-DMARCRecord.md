@@ -28,7 +28,7 @@ Get-DMARCRecord $domainlist | Where-Object {$_.Strings -match "p=reject"}
 <#
 Redirect successful queries to the domains with dmarc text file, and redirect errors to domains without dmarc text file. 
 #>
-Get-DmarcRecord 1> Domains_with_DMARC_records.txt 2>Domains_without_DMARC_records.txt 
+Get-DmarcRecord "C:\Users\Admin\Downloads\top100domains.txt" 1> Domains_with_DMARC_records.txt 2>Domains_without_DMARC_records.txt 
 ```
 
 There are many reasons to use Get-DMARCRecord, but I will personally recommend this Powershell cmdlet for saving the the time of having to write out repetetive Resolve-DNSName, NSLookup, or Dig queries-- even with for-loops. 
