@@ -12,7 +12,7 @@
 # RootModule = ''
 
 # Version number of this module.
-ModuleVersion = '1.0.0'
+ModuleVersion = '1.0.01'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -69,7 +69,7 @@ PowerShellVersion = '5.1'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = @('Get-DMARCRecord')
+FunctionsToExport = 'Get-DMARCRecord'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -95,35 +95,35 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        # Tags = @("email","email security","security","SPF","DKIM","DMARC","Resolve-DNSName")
+        Tags = @("email","emailsecurity","security","SPF","DKIM","DMARC","Resolve-DNSName")
 
         # A URL to the license for this module.
-        # LicenseUri = 'https://github.com/Cyber-Jacob/Get-DMARCRecord/blob/main/LICENSE'
+        LicenseUri = 'https://github.com/Cyber-Jacob/Get-DMARCRecord/blob/main/LICENSE'
 
         # A URL to the main website for this project.
-        # ProjectUri = 'https://github.com/Cyber-Jacob/Get-DMARCRecord'
+        ProjectUri = 'https://github.com/Cyber-Jacob/Get-DMARCRecord'
 
         # A URL to an icon representing this module.
-        # IconUri = 'https://private-user-images.githubusercontent.com/88467147/333828663-e86ea27a-6887-4c7d-b138-4e8d6ceb8507.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTY3MDc4NTYsIm5iZiI6MTcxNjcwNzU1NiwicGF0aCI6Ii84ODQ2NzE0Ny8zMzM4Mjg2NjMtZTg2ZWEyN2EtNjg4Ny00YzdkLWIxMzgtNGU4ZDZjZWI4NTA3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDA1MjYlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwNTI2VDA3MTIzNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWRjYTI2MWY4ZjgxMjY2MGY1MTU4NjU4OGY0ZGNhMmYxYTQ1MDkyZGVhZjA2MjM1NTIwNjRmZGY3NDYyOTg0ZDAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.wp6NRlb2Ed-ELUGGTjNmnGndvOIWC8kn7Wjc1BKskL8'
+        IconUri = 'https://private-user-images.githubusercontent.com/88467147/333828663-e86ea27a-6887-4c7d-b138-4e8d6ceb8507.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTY3MDc4NTYsIm5iZiI6MTcxNjcwNzU1NiwicGF0aCI6Ii84ODQ2NzE0Ny8zMzM4Mjg2NjMtZTg2ZWEyN2EtNjg4Ny00YzdkLWIxMzgtNGU4ZDZjZWI4NTA3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDA1MjYlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwNTI2VDA3MTIzNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWRjYTI2MWY4ZjgxMjY2MGY1MTU4NjU4OGY0ZGNhMmYxYTQ1MDkyZGVhZjA2MjM1NTIwNjRmZGY3NDYyOTg0ZDAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.wp6NRlb2Ed-ELUGGTjNmnGndvOIWC8kn7Wjc1BKskL8'
 
         # ReleaseNotes of this module
-        # ReleaseNotes = 'https://github.com/Cyber-Jacob/Get-DMARCRecord/blob/main/CHANGELOG'
+        ReleaseNotes = 'https://github.com/Cyber-Jacob/Get-DMARCRecord/blob/main/CHANGELOG'
 
         # Prerelease string of this module
         # Prerelease = ''
 
         # Flag to indicate whether the module requires explicit user acceptance for install/update/save
-        # RequireLicenseAcceptance = $false
+        #RequireLicenseAcceptance = $false
 
         # External dependent modules of this module
-        # ExternalModuleDependencies = @()
+        #ExternalModuleDependencies = @()
 
     } # End of PSData hashtable
 
 } # End of PrivateData hashtable
 
 # HelpInfo URI of this module
-# HelpInfoURI = 'https://github.com/Cyber-Jacob/Get-DMARCRecord/blob/main/Help/Get-DMARCRecord.md'
+HelpInfoURI = 'https://github.com/Cyber-Jacob/Get-DMARCRecord/blob/main/Help/Get-DMARCRecord.md'
 
 # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
 # DefaultCommandPrefix = ''
