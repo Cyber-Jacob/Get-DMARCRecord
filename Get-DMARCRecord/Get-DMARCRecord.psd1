@@ -12,7 +12,7 @@
 RootModule = 'Get-DMARCRecord.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.02'
+ModuleVersion = '1.0.3'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()

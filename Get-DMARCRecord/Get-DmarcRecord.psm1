@@ -56,9 +56,13 @@ function Get-DMARCRecord {
             $splat_parameters['Server'] = $Server
         }
 
-        if ("\" -in $Name -or "/" -in $Name) {
+        if (-not ($Name -is [array]) -and ($Name -like "*\*" -or $Name -like "*/*")){
+            #This block targets potential file paths versus a single domain or set of domains.
             if (Test-Path $Name -PathType Leaf) {
                 $Name = Get-Content -Path $Name
+            }
+            else {
+                Write-Error "Path '$Name' does not exist."
             }
         }
     }
