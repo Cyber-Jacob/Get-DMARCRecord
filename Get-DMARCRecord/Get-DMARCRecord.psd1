@@ -107,7 +107,7 @@ PrivateData = @{
         # IconUri = 'https://private-user-images.githubusercontent.com/88467147/333828663-e86ea27a-6887-4c7d-b138-4e8d6ceb8507.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTY3MDc4NTYsIm5iZiI6MTcxNjcwNzU1NiwicGF0aCI6Ii84ODQ2NzE0Ny8zMzM4Mjg2NjMtZTg2ZWEyN2EtNjg4Ny00YzdkLWIxMzgtNGU4ZDZjZWI4NTA3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDA1MjYlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwNTI2VDA3MTIzNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWRjYTI2MWY4ZjgxMjY2MGY1MTU4NjU4OGY0ZGNhMmYxYTQ1MDkyZGVhZjA2MjM1NTIwNjRmZGY3NDYyOTg0ZDAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.wp6NRlb2Ed-ELUGGTjNmnGndvOIWC8kn7Wjc1BKskL8'
 
         # ReleaseNotes of this module
-        # ReleaseNotes = ''
+        # ReleaseNotes = 'https://github.com/Cyber-Jacob/Get-DMARCRecord/blob/main/CHANGELOG'
 
         # Prerelease string of this module
         # Prerelease = ''
@@ -123,7 +123,7 @@ PrivateData = @{
 } # End of PrivateData hashtable
 
 # HelpInfo URI of this module
-# HelpInfoURI = ''
+# HelpInfoURI = 'https://github.com/Cyber-Jacob/Get-DMARCRecord/blob/main/Help/Get-DMARCRecord.md'
 
 # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
 # DefaultCommandPrefix = ''
