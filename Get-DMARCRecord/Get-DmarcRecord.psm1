@@ -56,7 +56,7 @@ function Get-DMARCRecord {
             $splat_parameters['Server'] = $Server
         }
 
-        if ("\" -in $Name) {
+        if ("\" -in $Name -or "/" -in $Name) {
             if (Test-Path $Name -PathType Leaf) {
                 $Name = Get-Content -Path $Name
             }
