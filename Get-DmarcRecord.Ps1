@@ -1,3 +1,6 @@
+<#
+.HelpInfoURI 'https://github.com/Cyber-Jacob/Get-DMARCRecord/blob/main/Help/Get-DMARCRecord.md'
+#>
 function Get-DMARCRecord {
     param (
         [Parameter(
@@ -138,4 +141,3 @@ function Get-DMARCRecord {
     }
 
 }
-Export-ModuleMember -Function Get-DMARCRecord
