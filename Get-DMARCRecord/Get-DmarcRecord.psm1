@@ -118,7 +118,7 @@ function Get-DMARCRecord {
             Write-Output "$total_records domain(s) processed."
             Write-Output "$successful DMARC record(s) found."
             Write-Output "$failures DMARC record(s) not found."
-            Write-Output "See successful domains with -ListSuccessfulDomains, see unsuccessful domains with -ListUnsuccessfulDomains, get error information with -DisplayErrors, or suppress this explanation for pipeline usage with -SuppressExplanation."
+            Write-Output "See successful domains with -ListSuccessfulDomains, see unsuccessful domains with -ListUnsuccessfulDomains, get error information with -DisplayErrors, suppress this explanation by omitting the -CountRecords option."
         }
 
         if ($PSBoundParameters.Containskey("DisplayErrors")){

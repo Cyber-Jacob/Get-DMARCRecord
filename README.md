@@ -6,23 +6,20 @@ This is a Powershell cmdlet to fetch DMARC records. DMARC is becoming a de-facto
 
 
 ## Usage
-This tool does **not** validate that record as p=none, p=reject, or p=quarantine; instead this tool looks for technically valid DMARC records according to RFC7489(https://datatracker.ietf.org/doc/html/rfc7489) and leaves the records you receive as a powershell object, accessible via the properties of the Microsoft.DnsClient.Commands.DnsRecord object. The ones you can use will be something like this:
+This tool does **not** validate that record as p=none, p=reject, or p=quarantine; instead this tool looks for technically valid DMARC records according to RFC7489(https://datatracker.ietf.org/doc/html/rfc7489) and leaves the records you receive as a powershell object, accessible via the properties of the Microsoft.DnsClient.Commands.DnsRecord object. The output of Get-DMARCRecord is intended to be standardized to return the DMARC record-- any DMARC record-- if one is present. From here, common powershell operators or expressions can be used to evaluate that record.
+
+### **Get-DMARC Record usage and further evaluation**
+
 ```
+Get-DMARCRecord topdomains.txt
 (Get-DMARCRecord dmarc.org).Strings
 Get-DMARCRecord $domainlist | Where-Object {$_.Strings -match "v=DMARC1;"}
-(Get-DMARCRecord .\domains.txt -SuppressExplanation).Strings | Where-Object {$_ -match "p=none" | -or $_ -match "p=quarantine"}
+(Get-DMARCRecord .\domains.txt).Strings | Where-Object {$_ -match "p=none" | -or $_ -match "p=quarantine"}
+Get-Content topdomains.txt | Get-DMARCRecord -CountRe
 ```
 
-Currently, Get-DMARCRecord can fetch DMARC record(s) for a singular domain passed to it, a powershell variable that contains a list or array of domains, or a file path. Get-DMARCRecord expects domains only.
+Currently, Get-DMARCRecord can fetch DMARC record(s) for a singular domain passed to it, a powershell variable that contains a list or array of domains, pipeline or a file path. Get-DMARCRecord expects domains only.
 
-This tool is intended to be used for work in pipelines, or to audit one or many domains for DMARC records. As noted above, DMARC records can be audited and validated with further Powershell scripting. We may look to add validation as parameters to Get-DMARCRecord, however the main priority is to keep the tool useful and extensible so it can be used as an auditing tool or simple reduce screen- and log- so as to not type long nslookup or resolve-dnsname queries.
+This tool is intended to be used for work in pipelines, or to audit one or many domains for DMARC records. As noted above, DMARC records can be audited and validated with further Powershell scripting. We may look to add validation as parameters to Get-DMARCRecord, however the main priority is to keep the tool useful and extensible so it can be used as an auditing tool or simply reduce screen-space and log-space so as to not type long nslookup or resolve-dnsname queries. Get-DMARC Record can be used in a For-Loop, or as the For-Loop depending on how you input the data.
 
-As of May 24, 2024 Get-DMARCRecord outputs an explanation of the number of domains processed, the amount of domains that have valid DMARC records, and the amount of domains that do not have valid DMARC records.
-This can be suppressed so that only DNS Request objects are returned:
-```
-Get-DMARCRecord dmarc.org -SuppressExplanation
-```
-It may ultimately be ideal to change this to be the default behavior-- specifically so this tool can be used to generate audit information by using the **-DisplayErrors, -ListSuccessfulDomains, -ListUnsuccessfulDomains, and -ShowRecords** parameters. Please let me know or feel free to fork.
-
-If auditing a large number of domains you will likely want to want to use the **-DisplayErrors** parameter, this will give you helpful information about why the domains you are checking are failing, some may have no DMARC record, while others may have incorrect TXT records or other kinds of records hosted on the same subdomain.
-
+If auditing a large number of domains you will likely want to want to use the **-DisplayErrors** parameter, or one of the **-List** parameters this will give you helpful information about why the domains you are checking are failing, some may have no DMARC record, while others may have incorrect TXT records or other kinds of records hosted on the same subdomain.
