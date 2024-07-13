@@ -13,9 +13,9 @@ This tool does **not** validate that record as p=none, p=reject, or p=quarantine
 ```
 Get-DMARCRecord topdomains.txt
 (Get-DMARCRecord dmarc.org).Strings
-Get-DMARCRecord $domainlist | Where-Object {$_.Strings -match "v=DMARC1;"}
-(Get-DMARCRecord .\domains.txt).Strings | Where-Object {$_ -match "p=none" | -or $_ -match "p=quarantine"}
-Get-Content topdomains.txt | Get-DMARCRecord -CountRe
+Get-DMARCRecord $domainlist | Where-Object {$_.Strings -match "RUA@mycompany.com"}
+(Get-DMARCRecord .\domains.txt).Strings | Where-Object {$_ -match "p=none" -or $_ -match "p=quarantine"}
+Get-Content topdomains.txt | Get-DMARCRecord -CountRecords
 ```
 
 Currently, Get-DMARCRecord can fetch DMARC record(s) for a singular domain passed to it, a powershell variable that contains a list or array of domains, pipeline or a file path. Get-DMARCRecord expects domains only.
