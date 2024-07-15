@@ -22,10 +22,6 @@ function Get-DMARCRecord {
 
         [Parameter(
             Mandatory=$false)]
-        [switch]$ShowRecord,
-
-        [Parameter(
-            Mandatory=$false)]
         [switch]$ListUnsuccessfulDomains,
 
         [Parameter(
@@ -80,34 +76,45 @@ function Get-DMARCRecord {
                 <#If the query we are returned contains _dmarc. as part of its' subdomain and a text record matching "V=DMARC1", then we
                 treat it as valid and successful
                 Write the query to show the user what is happening and let them know what they see in terms of valid records.#>
-                if ($query.Name -match "_dmarc." -and $query.Strings -match "v=DMARC1") {
+                if ($query.Name -match "_dmarc." -and $query.Type -match "TXT" -and $query.Strings -match "v=DMARC1") {
                     $successful += 1
                     $masterrecord += $query
                     write-output $query
                     $successful_domains += $domain
                 }
+
+                elseif ($query.Name -notcontains "_dmarc." -or $query.Type -notcontains "TXT") {
+                    <#Determine if there is no DMARC record; in some cases DNS servers will reply with different record types like an SOA record. We will count this as NO DMARC found instead of a none-dmarc record.#>
+                    $failures += 1
+                    $errors += [PSCustomObject]@{
+                        Domain = $domain
+                        Message = "_dmarc.$domain : No DMARC record found for $domain"
+                    }
+                    $unsuccessful_domains += $domain
+                    Write-Error -Message "_dmarc.$domain : No DMARC record found for $domain"
+                }
+
                 else {
                     <#add the query to the failed section, count it as an error, and log the error if there is a text record but it isn't a technically valid DMARC record.#>
                     $failures += 1
                     $errors += [PSCustomObject]@{
                         Domain = $domain
-                        Message = "None-DMARC record found for $domain"
+                        Message = "_dmarc.$domain : None-DMARC record found for $domain"
                     }
                     $unsuccessful_domains += $domain
-                    Write-Error -Message "None-DMARC record found for $domain"
-                    
+                    Write-Error -Message "_dmarc.$domain : None-DMARC record found for $domain"
                 }
             }
 
             catch {
-                <#If a terminating exception happens, count it as an error and log the error. Resolve-DNSName terminates in an error when a domain or subdomain that is queried doesn't exist. This will happen if there is NO published DMARC record.#>
+                <#If a terminating exception happens, count it as an error and log the error. Since we are using -erroraction stop, Resolve-DNSName terminates in an error when a domain that is queried doesn't exist. This will happen if there is NO record of any type published at _dmarc.$domain. The error handling above addresses invalid TXT records placed on _dmarc.$domain.#>
                 $failures += 1
                 $errors += [PSCustomObject]@{
                     Domain = $domain
                     Message = $_.Exception.Message
                 }    
                 $unsuccessful_domains += $domain
-                Write-Error -Message "Error: $_"
+                Write-Error -Message "$_"
             }
         }
     }
@@ -125,12 +132,6 @@ function Get-DMARCRecord {
             Write-Output "===================="
             Write-Output "Errors are: `n"
             $errors | ForEach-Object {Write-Output $_}
-        }
-
-        if ($PSBoundParameters.ContainsKey("ShowRecords")){
-            Write-Output "===================="
-            Write-Output "DMARC records: `n"
-            $masterrecord | ForEach-Object {Write-Output $_}
         }
 
         if ($PSBoundParameters.ContainsKey("ListUnsuccessfulDomains")){
