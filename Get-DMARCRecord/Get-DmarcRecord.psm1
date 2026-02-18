@@ -1,6 +1,55 @@
 <#
 .HelpInfoURI 'https://github.com/Cyber-Jacob/Get-DMARCRecord/blob/main/Help/Get-DMARCRecord.md'
 #>
+function Invoke-DnsQuery {
+    <#
+    .SYNOPSIS
+    Cross-platform DNS TXT lookup. Uses Resolve-DnsName on Windows, dig everywhere else.
+    Returns a list of objects with Name, Type, and Strings properties.
+    #>
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$QueryName,
+
+        [Parameter(Mandatory=$false)]
+        [string]$Server
+    )
+
+    if ($IsWindows -or $env:OS -match 'Windows') {
+        # Windows: use Resolve-DnsName
+        $splat = @{
+            'Name' = $QueryName
+            'Type' = 'TXT'
+            'ErrorAction' = 'Stop'
+        }
+        if ($Server) { $splat['Server'] = $Server }
+        return (Resolve-DnsName @splat)
+    }
+    else {
+        # Linux/macOS: use dig
+        $digArgs = @('TXT', '+short', $QueryName)
+        if ($Server) {
+            $serverArg = '@' + $Server
+            $digArgs += $serverArg
+        }
+
+        $raw = & dig @digArgs 2>&1
+        if ($LASTEXITCODE -ne 0 -or -not $raw) {
+            throw "dig: no record found for $QueryName"
+        }
+
+        # dig +short returns quoted strings like: "v=DMARC1; p=reject; ..."
+        # Multiple lines = multiple TXT records. Strip outer quotes and return.
+        $strings = @($raw | ForEach-Object { $_.Trim('"') })
+
+        return [PSCustomObject]@{
+            Name    = $QueryName
+            Type    = 'TXT'
+            Strings = $strings
+        }
+    }
+}
+
 function Get-DMARCRecord {
     param (
         [Parameter(
@@ -43,15 +92,6 @@ function Get-DMARCRecord {
         $unsuccessful_domains = @()
         $successful_domains = @()
 
-        $splat_parameters = @{
-            'Type' = 'TXT'
-            'ErrorAction' = 'Stop'
-        }
-
-        if ($PSBoundParameters.ContainsKey('Server')) {
-            $splat_parameters['Server'] = $Server
-        }
-
         if (-not ($Name -is [array]) -and ($Name -like "*\*" -or $Name -like "*/*")){
             #This block targets potential file paths versus a single domain or set of domains.
             if (Test-Path $Name -PathType Leaf) {
@@ -66,25 +106,27 @@ function Get-DMARCRecord {
     process {
 
         foreach ($domain in $Name) {
-            <#Set the domain name for the Resolve-DnsName query string by editing splat_parameters. Having this here allows us to parse domains from the position 0 Name parameter as singular items, or as many can fit into a variable or file.#>
-            $splat_parameters['Name'] = "_dmarc.$domain"
+            $queryName = "_dmarc.$domain"
 
             try {
                 <#Query statement to check DMARC records.#>
-                $query = resolve-dnsname @splat_parameters
+                $queryParams = @{ 'QueryName' = $queryName }
+                if ($PSBoundParameters.ContainsKey('Server')) {
+                    $queryParams['Server'] = $Server
+                }
+                $query = Invoke-DnsQuery @queryParams
 
                 <#If the query we are returned contains _dmarc. as part of its' subdomain and a text record matching "V=DMARC1", then we
-                treat it as valid and successful
-                Write the query to show the user what is happening and let them know what they see in terms of valid records.#>
+                treat it as valid and successful#>
                 if ($query.Name -match "_dmarc." -and $query.Type -match "TXT" -and $query.Strings -match "v=DMARC1") {
                     $successful += 1
                     $masterrecord += $query
-                    write-output $query
+                    Write-Output $query
                     $successful_domains += $domain
                 }
 
                 elseif ($query.Name -notcontains "_dmarc." -or $query.Type -notcontains "TXT") {
-                    <#Determine if there is no DMARC record; in some cases DNS servers will reply with different record types like an SOA record. We will count this as NO DMARC found instead of a none-dmarc record.#>
+                    <#No DMARC record; DNS may reply with SOA or other types.#>
                     $failures += 1
                     $errors += [PSCustomObject]@{
                         Domain = $domain
@@ -95,7 +137,7 @@ function Get-DMARCRecord {
                 }
 
                 else {
-                    <#add the query to the failed section, count it as an error, and log the error if there is a text record but it isn't a technically valid DMARC record.#>
+                    <#TXT record exists but isn't a valid DMARC record.#>
                     $failures += 1
                     $errors += [PSCustomObject]@{
                         Domain = $domain
@@ -107,12 +149,11 @@ function Get-DMARCRecord {
             }
 
             catch {
-                <#If a terminating exception happens, count it as an error and log the error. Since we are using -erroraction stop, Resolve-DNSName terminates in an error when a domain that is queried doesn't exist. This will happen if there is NO record of any type published at _dmarc.$domain. The error handling above addresses invalid TXT records placed on _dmarc.$domain.#>
                 $failures += 1
                 $errors += [PSCustomObject]@{
                     Domain = $domain
                     Message = $_.Exception.Message
-                }    
+                }
                 $unsuccessful_domains += $domain
                 Write-Error -Message "$_"
             }
